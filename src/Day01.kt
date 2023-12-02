@@ -12,6 +12,14 @@ fun main() {
         return sum
     }
 
+    fun part1Pretentious(input: List<String>): Int {
+        return input
+            .map { Pair(it.find { it.isDigit() }!!, it.findLast { it.isDigit() }!!) }
+            .sumOf { "${it.first}${it.second}".toInt() }
+    }
+
+    fun part1Golf(input: List<String>): Int = input.sumOf{"${it.find{it.isDigit()}!!}${it.findLast{it.isDigit()}!!}".toInt()}
+
     fun String.toNumber(): Int {
         return try {
             this.toInt()
@@ -53,15 +61,21 @@ fun main() {
             val lineNumber = "$first$last".toInt()
             sum += lineNumber
         }
-        return sum
+        return sum.also { println(it) }
     }
+
+    fun part2Pretentious(input: List<String>): Int = input
+        .map { regex.findAllOverlapping(it) }
+        .sumOf { "${it.first().toNumber()}${it.last().toNumber()}".toInt() }.also { println(it) }
+
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
-    check(part2(testInput) == 281)
+    check(part1(testInput) == part1Golf(testInput))
 
     val input = readInput("Day01")
     part1(input).println()
     part2(input).println()
+    check(part2(input) == part2Pretentious(input))
 
 }
